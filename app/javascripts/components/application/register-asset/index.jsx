@@ -59,7 +59,7 @@ const AssetRegistry = class extends Component {
       try {
         let contractInstance = await nfToken(window.web3);
 
-        const txHash = await contractInstance.buyToken.sendTransaction(
+        const txHash = await contractInstance.registerAsset.sendTransaction(
           this.state.ipfsHash,
           this.state.description,
           this.state.uniqueId,

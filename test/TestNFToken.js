@@ -2,9 +2,9 @@ import assertRevert from './support/assert-revert'
 import range from 'lodash.range'
 import Web3 from 'Web3'
 var web3 = new Web3();
-const nfToken = artifacts.require('NFToken')
+const nfToken = artifacts.require('AssetRegistry')
 
-contract('NFToken', function (accounts) {
+contract('AssetRegistry', function (accounts) {
   let contract
 
   const owner = accounts[0]
@@ -24,16 +24,16 @@ contract('NFToken', function (accounts) {
     })
   })
 
-  describe('buyToken', async () => {
+  describe('registerAsset', async () => {
 
     it('should fail when the title is bigger than the max size', () => {
-      assertRevert(contract.buyToken("myHash","mydescription", range(65).join('')))
+      assertRevert(contract.registerAsset("myHash","mydescription", range(65).join('')))
     })
     
     
     it('should fail when unique ID exists already', async () => {
-      await contract.buyToken("myHash","mydescription", "uniqueId", { value: web3.toWei(0.003)});
-      await assertRevert(contract.buyToken("myHash","mydescription", "uniqueId", { value: web3.toWei(0.003)}));
+      await contract.registerAsset("myHash","mydescription", "uniqueId", { value: web3.toWei(0.003)});
+      await assertRevert(contract.registerAsset("myHash","mydescription", "uniqueId", { value: web3.toWei(0.003)}));
     })
     
     /*

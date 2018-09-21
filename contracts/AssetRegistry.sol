@@ -36,7 +36,7 @@ contract AssetRegistry is ERC721Token, Ownable {
     /// @param _ipfsImageHash hash of the image of the asset on ipfs
     /// @param _description The short description of the asset
     /// @param _uniqueId the ID by which the asset is uniquely idenitifable
-    function buyToken (
+    function registerAsset (
         string _ipfsImageHash,
         string _description,
         string _uniqueId
