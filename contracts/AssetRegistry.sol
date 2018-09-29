@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
-import "zeppelin-solidity/contracts/ownership/Ownable.sol";
-import "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 
 contract AssetRegistry is ERC721Token, Ownable {
 
@@ -41,20 +41,7 @@ contract AssetRegistry is ERC721Token, Ownable {
         string _description,
         string _uniqueId
   ) external payable {
-        bytes memory __descriptionBytes = bytes(_description);
-        require(__descriptionBytes.length >= DESCRIPTION_MIN_LENGTH, "_description is too short");
-        require(__descriptionBytes.length <= DESCRIPTION_MAX_LENGTH, "_description is too long");
-        require(bytes(tokenDescriptions[_uniqueId]).length == 0, "token with this uniqueId already exists");
-
-        require(msg.value >= currentRegistrationPrice, "Amount of Ether sent too small");
-        uint256 index = allTokens.length + 1;
-        _mint(msg.sender, index);
-        
-        uniqueTokensIds[index] = _uniqueId;
-        ipfsImageHashes[_uniqueId] = _ipfsImageHash;
-        tokenDescriptions[_uniqueId] = _description;
-    
-        emit BoughtToken(msg.sender, index);
+        registerAssetFor(_ipfsImageHash,_description,_uniqueId, msg.sender);
     }
 
     /// Requires the amount of Ether be at least or more of the currentRegistrationPrice
@@ -62,12 +49,13 @@ contract AssetRegistry is ERC721Token, Ownable {
     /// @param _ipfsImageHash hash of the image of the asset on ipfs
     /// @param _description The short description of the asset
     /// @param _uniqueId the ID by which the asset is uniquely idenitifable
+    /// @param _for the address of the user who will own the nft
     function registerAssetFor (
         string _ipfsImageHash,
         string _description,
         string _uniqueId,
         address _for
-  ) external payable onlyOwner {
+  ) public payable {
         bytes memory __descriptionBytes = bytes(_description);
         require(__descriptionBytes.length >= DESCRIPTION_MIN_LENGTH, "_description is too short");
         require(__descriptionBytes.length <= DESCRIPTION_MAX_LENGTH, "_description is too long");

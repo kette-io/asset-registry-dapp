@@ -1,6 +1,8 @@
 import assertRevert from './support/assert-revert'
 import range from 'lodash.range'
 import Web3 from 'Web3'
+
+
 var web3 = new Web3();
 const nfToken = artifacts.require('AssetRegistry')
 
@@ -21,6 +23,16 @@ contract('AssetRegistry', function (accounts) {
   beforeEach(async function () {
     await nfToken.new().then(function (instance) {
       contract = instance
+    })
+  })
+
+  describe('registerAssetFor', () => {
+    it('should work when called by non-owner', async () => {
+      await contract.registerAssetFor("myHash", "mydescription", "uniqueId", accounts[1], { from: accounts[1], value: web3.toWei(0.003) });
+    })
+
+    it('should work when called by owner', async () => {
+      await contract.registerAssetFor("myHash", "mydescription", "uniqueId", accounts[1], { from: accounts[0], value: web3.toWei(0.003) });
     })
   })
 
@@ -63,16 +75,6 @@ contract('AssetRegistry', function (accounts) {
     */
   })
 
-  describe('registerAssetFor', () => {
-    it('should fail when unique ID exists already', async () => {
-      await assertRevert(contract.registerAssetFor("myHash", "mydescription", "uniqueId", accounts[1], { from: accounts[1], value: web3.toWei(0.003) }));
-    })
-
-    it('should work when called by owner', async () => {
-      await contract.registerAssetFor("myHash", "mydescription", "uniqueId", accounts[1], { from: accounts[0], value: web3.toWei(0.003) });
-    })
-
-  })
   /*
   describe('getToken', () => {
     it('should return the type and title of the token', async () => {

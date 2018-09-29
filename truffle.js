@@ -1,24 +1,31 @@
-// Allows us to use ES6 in our migrations and tests.
 require('@babel/register')
 require('@babel/polyfill')
 
-var HDWalletProvider = require('truffle-hdwallet-provider')
+const HDWalletProvider = require('truffle-hdwallet-provider')
 
-var mnemonic = process.env.HDWALLET_MNEMONIC
+// First read in the config.json to get our mnemonic
+const config = require('./config.json')
+let mnemonic
+if (config.mnemonic.length > 0) {
+  mnemonic = config.mnemonic
+} else {
+  console.log('No config.json found. If you are trying to publish EPM ' +
+    'this will fail. Otherwise, you can ignore this message!')
+  mnemonic = ''
+}
 
 module.exports = {
   networks: {
-    ropsten: {
-      provider: new HDWalletProvider(mnemonic, process.env.ROPSTEN_PROVIDER_URL),
-      network_id: 3,
-      gas: 4612388,
-      gasPrice: 100000000000
-    },
-    rinkeby: {
-      provider: new HDWalletProvider(mnemonic, process.env.RINKEBY_PROVIDER_URL),
-      network_id: 4,
-      gas: 4612388,
-      gasPrice: 100000000000
+    live: {
+      provider: function () {
+        return new HDWalletProvider(mnemonic, "")
+      },
+      network_id: 1,
+    }, rinkeby: {
+      provider: function () {
+        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/" + config.infuraKey)
+      },
+      network_id: 4
     },
     development: {
       host: '127.0.0.1',
