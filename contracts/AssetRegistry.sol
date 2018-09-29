@@ -57,6 +57,33 @@ contract AssetRegistry is ERC721Token, Ownable {
         emit BoughtToken(msg.sender, index);
     }
 
+    /// Requires the amount of Ether be at least or more of the currentRegistrationPrice
+    /// @dev Creates an instance of an token and mints it to the purchaser
+    /// @param _ipfsImageHash hash of the image of the asset on ipfs
+    /// @param _description The short description of the asset
+    /// @param _uniqueId the ID by which the asset is uniquely idenitifable
+    function registerAssetFor (
+        string _ipfsImageHash,
+        string _description,
+        string _uniqueId,
+        address _for
+  ) external payable onlyOwner {
+        bytes memory __descriptionBytes = bytes(_description);
+        require(__descriptionBytes.length >= DESCRIPTION_MIN_LENGTH, "_description is too short");
+        require(__descriptionBytes.length <= DESCRIPTION_MAX_LENGTH, "_description is too long");
+        require(bytes(tokenDescriptions[_uniqueId]).length == 0, "token with this uniqueId already exists");
+
+        require(msg.value >= currentRegistrationPrice, "Amount of Ether sent too small");
+        uint256 index = allTokens.length + 1;
+        _mint(_for, index);
+        
+        uniqueTokensIds[index] = _uniqueId;
+        ipfsImageHashes[_uniqueId] = _ipfsImageHash;
+        tokenDescriptions[_uniqueId] = _description;
+    
+        emit BoughtToken(_for, index);
+    }
+
   /**
    * @dev Returns all of the tokens that the user owns
    * @return An array of token indices

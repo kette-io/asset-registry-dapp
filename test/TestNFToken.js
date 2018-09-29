@@ -27,15 +27,15 @@ contract('AssetRegistry', function (accounts) {
   describe('registerAsset', async () => {
 
     it('should fail when the title is bigger than the max size', () => {
-      assertRevert(contract.registerAsset("myHash","mydescription", range(65).join('')))
+      assertRevert(contract.registerAsset("myHash", "mydescription", range(65).join('')))
     })
-    
-    
+
+
     it('should fail when unique ID exists already', async () => {
-      await contract.registerAsset("myHash","mydescription", "uniqueId", { value: web3.toWei(0.003)});
-      await assertRevert(contract.registerAsset("myHash","mydescription", "uniqueId", { value: web3.toWei(0.003)}));
+      await contract.registerAsset("myHash", "mydescription", "uniqueId", { value: web3.toWei(0.003) });
+      await assertRevert(contract.registerAsset("myHash", "mydescription", "uniqueId", { value: web3.toWei(0.003) }));
     })
-    
+
     /*
     it('should return 0 when no tokens', async () => {
       assert.equal((await contract.myTokens()).length, 0)
@@ -61,6 +61,17 @@ contract('AssetRegistry', function (accounts) {
       assert.equal(tokens.length, 2)
     })
     */
+  })
+
+  describe('registerAssetFor', () => {
+    it('should fail when unique ID exists already', async () => {
+      await assertRevert(contract.registerAssetFor("myHash", "mydescription", "uniqueId", accounts[1], { from: accounts[1], value: web3.toWei(0.003) }));
+    })
+
+    it('should work when called by owner', async () => {
+      await contract.registerAssetFor("myHash", "mydescription", "uniqueId", accounts[1], { from: accounts[0], value: web3.toWei(0.003) });
+    })
+
   })
   /*
   describe('getToken', () => {
