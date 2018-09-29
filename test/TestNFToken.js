@@ -21,9 +21,7 @@ contract('AssetRegistry', function (accounts) {
   const TOKEN_TYPE = 2
 
   beforeEach(async function () {
-    await nfToken.new().then(function (instance) {
-      contract = instance
-    })
+    contract = await nfToken.new();
   })
 
   describe('registerAssetFor', () => {
