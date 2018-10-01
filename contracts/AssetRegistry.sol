@@ -14,11 +14,7 @@ contract AssetRegistry is ERC721Token, Ownable {
     uint8 constant DESCRIPTION_MIN_LENGTH = 1;
     uint8 constant DESCRIPTION_MAX_LENGTH = 64;
 
-    /*** DATA TYPES ***/
-
     /// Price set by contract owner for each token in Wei.
-    /// @dev If you'd like a different price for each token type, you will
-    /// need to use a mapping like: `mapping(uint256 => uint256) tokenTypePrices;`
     uint256 currentRegistrationPrice = 3000000000000000;
 
     //every asset has an image attached to it stored on ipfs. this is the corresponding hash
@@ -28,9 +24,7 @@ contract AssetRegistry is ERC721Token, Ownable {
     //short description of your asset
     mapping(uint256 => string) uniqueTokensIds;
 
-    constructor() ERC721Token("KETTE Asset Registry", "KET") public {
-    // any init code when you deploy the contract would run here
-    }
+    constructor() ERC721Token("KETTE Asset Registry", "KET") public {}
 
     /// Requires the amount of Ether be at least or more of the currentRegistrationPrice
     /// @dev Creates an instance of an token and mints it to the purchaser
@@ -73,59 +67,40 @@ contract AssetRegistry is ERC721Token, Ownable {
         emit BoughtToken(_for, index);
     }
 
-  /**
+   /**
    * @dev Returns all of the tokens that the user owns
    * @return An array of token indices
    */
-    function myTokens()
-    external
-    view
-    returns (
-      uint256[]
-    )
-    {
+    function myTokens() external view returns (uint256[]) {
         return ownedTokens[msg.sender];
     }
     
     /// @notice Returns all the relevant information about a specific token
     /// @param _index The index of the token of interest
-    function getUniqueIdForIndex(uint256 _index)
-    external
-    view
-    returns (
-      string uniqueId_
-    ) {
+    function getUniqueIdForIndex(uint256 _index) external view returns (string uniqueId_) {
         uniqueId_ = uniqueTokensIds[_index];
     }
 
-  /// @notice Returns all the relevant information about a specific token
-  /// @param _uniqueId The ID of the token of interest
-    function getToken(string _uniqueId)
-    external
-    view
-    returns (
-      string ipfsImageHash_,
-      string description_
-    ) {
+    /// @notice Returns all the relevant information about a specific token
+    /// @param _uniqueId The ID of the token of interest
+    function getToken(string _uniqueId) external view returns (string ipfsImageHash_, string description_) {
         ipfsImageHash_ = ipfsImageHashes[_uniqueId];
         description_ = tokenDescriptions[_uniqueId];
     }
 
-  /// @notice Allows the owner of this contract to set the currentRegistrationPrice for each token
-    function setCurrentRegistrationPrice(uint256 newPrice)
-    public
-    onlyOwner
-    {
+    /// @notice Allows the owner of this contract to set the currentRegistrationPrice for each token
+    function setCurrentRegistrationPrice(uint256 newPrice) public onlyOwner {
         currentRegistrationPrice = newPrice;
     }
 
-  /// @notice Returns the currentRegistrationPrice for each token
-    function getCurrentRegistrationPrice()
-    external
-    view
-    returns (
-    uint256 price_
-  ) {
+    /// @notice Returns the currentRegistrationPrice for each token
+    function getCurrentRegistrationPrice() external view returns (uint256 price_) {
         price_ = currentRegistrationPrice;
+    }
+
+    /// @notice Let´s you withdraw all the contracts funds
+    /// @param _to account the withdraw should go to
+    function withdraw(address _to) external onlyOwner {
+        _to.transfer(address(this).balance);
     }
 }
