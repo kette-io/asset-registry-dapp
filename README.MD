@@ -6,7 +6,7 @@ This repository contains a react app that makes use of [web3.js](https://github.
 
 ##### Meta Mask
 
-This implementation requires the [Meta Mask](https://metamask.io/) plugin your browser.
+This implementation requires the [Meta Mask](https://metamask.io/) plugin in your browser. Alternatively you can use the [Brave](https://brave.com/) browser.
 
 ##### NFC
 
@@ -14,4 +14,7 @@ For demonstration purposes, this code relies on a working NFC-Reader. NFC reader
 
 ## Run application
        npm install
-       npm run dev       
+       npm run dev
+
+## Credits
+This dApp is based on [Etherplate by Chuck Bergeron](https://github.com/chuckbergeron/etherplate)
