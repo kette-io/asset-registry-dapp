@@ -3,8 +3,6 @@ node_modules
 .envrc
 config/*.json
 .ganache
-secrets
 functions
 networks/1234.json
 build
-config.json

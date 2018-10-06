@@ -1,5 +1,5 @@
 import TruffleContract from 'truffle-contract'
-import AssetRegistryABI from '../../../build/contracts/AssetRegistry.json'
+import AssetRegistryABI from '../../../AssetRegistry.json'
 
 const nfTokenContract = TruffleContract(AssetRegistryABI)
 
