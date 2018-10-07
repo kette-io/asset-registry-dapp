@@ -12,7 +12,7 @@ This implementation requires the [Meta Mask](https://metamask.io/) plugin in you
 
 For demonstration purposes, this code relies on a working NFC-Reader. NFC reader capabilites only work in the local development mode.
 
-## Run application
+## Run
        npm install
        npm run dev
 
@@ -26,6 +26,10 @@ The project comprises of four modules. Each module with its individual repositor
 - [smart contracts](https://github.com/kette-io/nft-asset-registry-smart-contracts)
 
 ![Architecture Overview](https://github.com/kette-io/nft-asset-registry-fiat-frontend/raw/master/readMeImages/architectureOverview.jpg)
+
+## Todo
+- automated tests
+- remove NFC?
 
 ## Credits
 This dApp is based on [Etherplate by Chuck Bergeron](https://github.com/chuckbergeron/etherplate)
