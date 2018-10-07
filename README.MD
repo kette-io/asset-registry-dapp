@@ -16,5 +16,16 @@ For demonstration purposes, this code relies on a working NFC-Reader. NFC reader
        npm install
        npm run dev
 
+## Architecture Overview
+
+The project comprises of four modules. Each module with its individual repository:
+
+- [fiat frontend](https://github.com/kette-io/nft-asset-registry-fiat-frontend)
+- dApp (this repository)
+- [backend](https://github.com/kette-io/nft-asset-registry-backend)
+- [smart contracts](https://github.com/kette-io/nft-asset-registry-smart-contracts)
+
+![Architecture Overview](https://github.com/kette-io/nft-asset-registry-fiat-frontend/raw/master/readMeImages/architectureOverview.jpg)
+
 ## Credits
 This dApp is based on [Etherplate by Chuck Bergeron](https://github.com/chuckbergeron/etherplate)
